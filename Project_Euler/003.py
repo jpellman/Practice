@@ -8,12 +8,12 @@
 # John Pellman, October 6th 2014
 
 '''
- First, find all the prime factors of 600851475143 and store them in a list.
- Accomplish this by determining a) all of the factors of 600851475143 and
- b) all of the prime values up until 600851475143.  Take the the intersection
- of a and b.  The last value of the list in the intersection is the largest
- prime factor. Computationally, this method will be horrid, but it's what
- I want to start with because my feeble human mind feels inclined towards it.
+First, find the largest factor of the number.  Then, find the largest prime
+number that is less than the number.  Compare the two.  If the factor is larger
+than the prime, find the next largest factor and compare that to the prime.
+If the prime is larger than the factor, find the next largest prime and
+compare that to the factor.  When the factor and the prime are equal,
+the largest prime factor is all that should remain.
 '''
 
 #number=13195
@@ -39,27 +39,44 @@ def isPrime(x):
 		divisor=divisor-1
 	return primeTruth	
 	
-def primeValues(x):
+def nextLargestPrime(currentPrime):
 	''' primeValues
-	Arguments: 	x - An arbitrary integer.
-	Returns:	A list containing all of the prime values up until x.
+	Arguments:	currentPrime - The current large prime number under
+			scrutiny.	
+	Returns:	The next largest prime value below the orignal number
+			that is less than currentPrime.	
 	'''
-	return [1] + filter(isPrime, range(2,x+1))
+	nextPrime=currentPrime-1
+	while not isPrime(nextPrime):
+		nextPrime=nextPrime-1
+	return nextPrime
 
-def allFactors(x):
-	''' allFactors
+def nextLargestFactor(originalVal, currentFactor):
+	''' nextLargestFactor
+	Arguments:	originalVal - The original value of the number
+			whose largest prime factor is to be determined.
+			currentFactor - The current large factor under
+			scrutiny.	
+	Returns:	The next largest factor of originalVal that is less
+			than currentFactor.	
+	'''
+	nextFactor=currentFactor-1
+	while not originalVal%nextFactor==0:
+		nextFactor=nextFactor-1
+	return nextFactor
+
+def largestPrimeFactor(x):
+	''' largestPrimeFactor
 	Arguments:	x - An arbitrary integer.
-	Returns:	A list containing all of the factors of x.
+	Returns:	The largest prime factor of x.
 	'''
-	def isFactor(y) : return x%y==0
-	return filter(isFactor, range(1,x+1))
+	nextPrime=nextLargestPrime(x)
+	nextFactor=nextLargestFactor(x,x)
+	while nextFactor != nextPrime:
+		if nextFactor>nextPrime:
+			nextFactor=nextLargestFactor(x,nextFactor)
+		elif nextPrime>nextFactor:
+			nextPrime=nextLargestPrime(nextPrime)
+	return nextFactor
 
-primevalues=set(primeValues(number))
-allfactors=set(allFactors(number))
-print max(primevalues & allfactors)
-
-''' I will most likely take a shower while this is running because it will
-take hell and half to finish executing. 
-
-Actually, it seems that I have run into a memory error, so I will need to 
-optimize it anyways.  Still taking a shower first though.''' 
+print largestPrimeFactor(number)
