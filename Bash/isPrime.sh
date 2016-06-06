@@ -1,5 +1,5 @@
 #! /bin/bash
-# 001Prime.sh
+# isPrime.sh
 # Authored by John Pellman
 # Birthday: April 8th, 2014
 # Last Revision: April 8th, 2014
