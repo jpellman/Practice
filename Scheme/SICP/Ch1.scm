@@ -8,7 +8,7 @@
 ;
 ; 19
 ; False
-; 4
+; 4 <-- wrong, I somehow thought this was an or operation
 ; 16
 ; 6
 ; 16
